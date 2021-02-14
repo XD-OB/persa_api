@@ -1,0 +1,20 @@
+{
+  "name": "persa_api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/XD-OB/persa_api.git",
+  "author": "XD-OB <OB-96@hotmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon app",
+    "start": "node app"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.16",
+    "validator": "^13.5.2"
+  }
+}
