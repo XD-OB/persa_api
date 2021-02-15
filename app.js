@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+require('dotenv/config');
 
 // For the deployement the server will have the port value in the env.
 const PORT = process.env.PORT || 5000;
@@ -13,12 +14,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 // database connection
-const username = 'obelouch';
-const password = 'Persa2021';
-const db_name = 'persadb';
-const dbURI = `mongodb+srv://${username}:${password}@cluster0.s6kah.mongodb.net/${db_name}`;
 mongoose.connect(
-    dbURI,
+    process.env.DB_URI,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -26,7 +23,7 @@ mongoose.connect(
     })
     .then( (result) => app.listen(
         PORT,
-        () => console.log(`Server started on port ${PORT}`)
+        () => console.log(`Server started on port ${PORT} and connected successfuly with the DB!`)
     ))
     .catch( (err) => console.log(err) );
 
