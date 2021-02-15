@@ -1,9 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 require('dotenv/config');
 
-// For the deployement the server will have the port value in the env.
+//// For the deployement the server will have the port value in the env.
 const PORT = process.env.PORT || 5000;
 
 const app = express();
@@ -12,6 +13,8 @@ const app = express();
 app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser());
+//// Allow fetching request across differents domaines
+app.use(cors());
 
 // database connection
 mongoose.connect(
