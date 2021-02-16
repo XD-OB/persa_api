@@ -1,5 +1,7 @@
 const { handleErrors } = require('../tools/handleErrors');
+const { createToken } = require('../tools/jwt');
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
 
 
 // Controller Actions:
@@ -12,7 +14,16 @@ module.exports.signup_post = async (req, res) => {
             email: req.body.email,
             password: req.body.password
         });
-        res.status(201).json(user);
+        const token = createToken(user._id);
+        res.cookie(
+            'persaJWT',
+            token,
+            {
+                httpOnly: true,
+                maxAge: 86400000
+            }
+        );
+        res.status(201).json({"id": user._id, token});
     }
     catch(err) {
         const errors = handleErrors(err);

@@ -8,6 +8,8 @@ dotenv.config();
 
 const app = express();
 
+const PORT = process.env.PORT || 5000;
+
 // database connection
 mongoose.connect(
     process.env.DB_URI,
@@ -16,7 +18,13 @@ mongoose.connect(
         useUnifiedTopology: true,
         useCreateIndex:true
     },
-    () => console.log('Connected to DB!')
+).then(
+    (result) => app.listen(
+        PORT,
+        () => console.log(`Server started on port ${PORT}`)
+    )
+).catch(
+    (err) => console.log(err)
 );
 
 // Import Routes
@@ -28,17 +36,9 @@ app.use(express.json());
 app.use(cookieParser());
 //// Allow fetching request across differents domaines
 app.use(cors());
-//// Route Middlewares
+
+
+// Routes
 app.use('/api/user', authRoutes);
-
-
-// test
+//test
 app.get('/', (req, res) => res.send('<h1>test</h1>'));
-
-
-const PORT = process.env.PORT || 5000;
-
-app.listen(
-    PORT,
-    () => console.log(`Server started on port ${PORT}`)
-);
