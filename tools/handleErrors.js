@@ -7,7 +7,12 @@ module.exports.handleErrors = (err) => {
         email: '',
         password: '',
     };
-
+    // Duplicate error code
+    if (err.code === 11000) {
+        errors.email = 'that email is already registered';
+        return errors;
+    }
+    // Validation errors
     if (err.message.includes('user validation failed')) {
         Object.values(err.errors).forEach(
             ({ properties }) => {

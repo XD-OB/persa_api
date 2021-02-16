@@ -1,5 +1,5 @@
+const { handleErrors } = require('../tools/handleErrors');
 const User = require('../models/User');
-const { handleErrors } = require('./handleErrors');
 
 
 // Controller Actions:

@@ -1,7 +1,8 @@
+const { isName, isStrongPassword } = require('../tools/checkValues');
+const { isEmail } = require('validator');
 const mongoose = require('mongoose');
-const { isEmail, isAlpha, isAlphanumeric } = require('validator');
+const bcrypt = require('bcrypt');
 
-const isName = (value) => isAlpha(value, ['en-US'], { ignore:" -" });
 
 const userSchema = new mongoose.Schema({
     is_owner: {
@@ -37,6 +38,7 @@ const userSchema = new mongoose.Schema({
         required: [ true, 'Please enter a password' ],
         minlength: [ 8, 'Minimum password length is 8 characters' ],
         maxlength: [ 1024, 'The password is long!' ],
+        validate: [ isStrongPassword, 'Your password must contain (alphabet, digit and special characters)' ],
     },
     business_name: {
         type: String,
@@ -59,6 +61,13 @@ const userSchema = new mongoose.Schema({
         default: Date.now(),
     },
     sales_persons: [ String ],
+});
+
+// Fire a function before doc saved to db
+userSchema.pre('save', async function (next) {
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
 });
 
 const User = mongoose.model('user', userSchema);
